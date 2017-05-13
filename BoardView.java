@@ -13,16 +13,16 @@ package com.example.r.gomokunarabe;
 
 public class BoardView extends View {
 
-    Board board = new Board();
-    Player player;
+    private Board board = new Board();
+    private Player player;
     private Paint paint;
     private float cx;    // タップした位置
     private float cy;    // タップした位置
     private float radius;    // 円の半径
-    private int trout = board.COL*2;    // マスの数ｘ２
+//     private int trout = board.COL*2;    // マスの数ｘ２
     private int troutSizeX;    //1マスのXサイズ
     private int troutSizeY;    //1マスのYサイズ
-    Point point = new Point(0, 0);    //コンテンツ領域
+    private Point point = new Point(0, 0);    //コンテンツ領域
 
 
 
@@ -55,8 +55,8 @@ public class BoardView extends View {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         point.set(this.getWidth(), this.getHeight());
-        troutSizeX = this.getWidth() / trout;
-        troutSizeY = this.getHeight() / trout;
+        troutSizeX = this.getWidth() / Board.SIZE;//trout →　Board.SIZE
+        troutSizeY = this.getHeight() / Board.SIZE;//trout →　Board.SIZE
     }
 
     /**Draw*/
@@ -65,8 +65,8 @@ public class BoardView extends View {
         // 格子を描画する
         drawBoard(canvas);
         //Pieceを描画する
-        for(int x=0;x<=trout/2;x++){
-            for(int y=0;y<=trout/2;y++){
+        for(int x=0;x<=Board.SIZE;x++){//trout/2 → Board.SIZE
+            for(int y=0;x<=Board.SIZE;y++){//trout/2 → Board.SIZE
                 drawPiece(canvas, board.getCellSatus(x,y),x,y);
             }
         }
@@ -82,10 +82,10 @@ public class BoardView extends View {
                 int tx=0;    // X座標
                 int ty=0;    // Y座標
                 for (int i = 1; i < trout; i += 2) {
-                    if (cx >= i * point.x / trout && cx < (i + 2) * point.x) {
+                    if (cx >= i * point.x / Board.SIZE && cx < (i + 2) * point.x) {//trout →　Board.SIZE
                         tx = (i + 1) / 2;
                     }
-                    if (cy >= i * point.y / trout && cy < (i + 2) * point.y) {
+                    if (cy >= i * point.y / Board.SIZE && cy < (i + 2) * point.y) {//trout →　Board.SIZE
                         ty = (i + 1) / 2;
                     }
                 }
@@ -114,8 +114,8 @@ public class BoardView extends View {
         Paint paint = new Paint();
         paint.setStrokeWidth(1);
         for (int i = 0; i < (trout / 2); i++) {
-            canvas.drawLine(point.x * i / (trout / 2), 0, point.x * i / (trout / 2), point.y, paint);
-            canvas.drawLine(0, point.y * i / (trout / 2), point.x, point.y * i / (trout / 2), paint);
+            canvas.drawLine(point.x * i / Board.SIZE, 0, point.x * i / Board.SIZE, point.y, paint);//（trout/2） →　Board.SIZE
+            canvas.drawLine(0, point.y * i / Board.SIZE, point.x, point.y * i / Board.SIZE, paint);//（trout/2） →　Board.SIZE
         }
     }
 
