@@ -5,13 +5,13 @@ public class Game{
     Player CurrentPlayer;
     int PLAYER_COUNT;
     //プレイヤーをセット
-    public static Player setPlayer1(Player player){
+    public static void setPlayer1(Player player){
 //         player = new Player(Piece.BLACK);
         this.player1 = player;
 //         return player;
 
     }
-    public static Player setPlayer2(Player player){
+    public static void setPlayer2(Player player){
 //         player = new Player(Piece.WHITE);
         this.player2 = player;
 //         return player;
@@ -24,6 +24,8 @@ public class Game{
     }
     //プレイヤー交替
     public static void changeNextPlayer(){
+        CurrentPlayer = Player();
+        
     }
     //終了判定
     public static boolean isFinished(Board board){
