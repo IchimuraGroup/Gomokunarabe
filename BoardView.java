@@ -66,7 +66,7 @@ public class BoardView extends View {
         drawBoard(canvas);
         //Pieceを描画する
         for(int x=0;x<=trout/2;x++){
-            for(int y=0;x<=trout/2;y++){
+            for(int y=0;y<=trout/2;y++){
                 drawPiece(canvas, board.getCellSatus(x,y),x,y);
             }
         }
