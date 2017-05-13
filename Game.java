@@ -38,15 +38,17 @@ public class Game{
             boolean finish = false;
             for (int x = 0; x < Board.SIZE; x++) {
                 for (int y = 0; y < Board.SIZE; y++) {
+                    if(status != Cell.STATUS.NONE){
 //                     searchConnectCount(count, status, board, x*dir[X], y*dir[Y], dir);
-//                     int count1 = searchConnectCount(0, board.getCellStatus(x, y), board, x, y, new int[]{0, 1});//上方向
-//                     int count2 = searchConnectCount(0, board.getCellStatus(x, y), board, x, y, new int[]{1, 0});//右方向
-//                     int count3 = searchConnectCount(0, board.getCellStatus(x, y), board, x, y, new int[]{0, -1});//下方向
-//                     int count4 = searchConnectCount(0, board.getCellStatus(x, y), board, x, y, new int[]{-1, 0});//左方向
+                 int count1 = searchConnectCount(0, board.getCellStatus(x, y), board, x, y, new int[]{0, 1});//上方向
+                 int count2 = searchConnectCount(0, board.getCellStatus(x, y), board, x, y, new int[]{1, 0});//右方向
+                 int count3 = searchConnectCount(0, board.getCellStatus(x, y), board, x, y, new int[]{0, -1});//下方向
+                 int count4 = searchConnectCount(0, board.getCellStatus(x, y), board, x, y, new int[]{-1, 0});//左方向
                     
-//                     if(count1 > 5 || count2 > 5 || count3 > 5 || count4 > 5){
-//                         finish = true;
-//                     }
+                    if(count1 >= 5 || count2 >= 5 || count3 >= 5 || count4 >= 5){
+                         finish = true;
+                    }
+                    }
                 }
             }
 
@@ -57,16 +59,16 @@ public class Game{
         return finish;
         }
     //指定した座標、方向に連結している同じ種類の駒をカウントし、戻り値として返す
-    private int searchConnectCount(int count, Cell.STATUS status, Board board, int x, int y, dir[] dir){
+    private int searchConnectCount(int count, Cell.STATUS status, Board board, int x, int y, int[dir] dir){
         final int X = 0;
         final int Y = 1;
-        if(x < 0 || x > Board.SIZE || y < 0 || y > Board.SIZE){
+        if(x < 0 || x >= Board.SIZE || y < 0 || y >= Board.SIZE){
             return count;
         }
         
         if(status == board.getCellStatus(x, y)){
             count++;
-            count = searchConnectCount(count, status, board, x*dir[X], y*dir[Y], dir);          
+            count = searchConnectCount(count, status, board, x+dir[X], y+dir[Y], dir);          
         }       
         
         return count;
