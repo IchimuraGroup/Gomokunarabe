@@ -2,6 +2,7 @@ public class Game{
 //     Player player;
     private Player player1 = new Player(Piece.BLACK);
     private Player player2 = new Player(Piece.WHITE);
+    Player CurrentPlayer;
     int PLAYER_COUNT;
     //プレイヤーをセット
     public static Player setPlayer1(Player player){
@@ -19,7 +20,7 @@ public class Game{
     //現在のプレイヤーを返す
     public static Player getCurrentPlayer(Player player){
 
-        return player;
+        return CurrentPlayer;
     }
     //プレイヤー交替
     public static void changeNextPlayer(){
