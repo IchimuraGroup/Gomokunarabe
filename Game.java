@@ -46,11 +46,15 @@ public class Game{
                 if(status != Cell.STATUS.NONE){
 //                     searchConnectCount(count, status, board, x*dir[X], y*dir[Y], dir);
                     int count1 = searchConnectCount(0, status, board, x, y, new int[]{0, 1});//上方向
-                    int count2 = searchConnectCount(0, status, board, x, y, new int[]{1, 0});//右方向
-                    int count3 = searchConnectCount(0, status, board, x, y, new int[]{0, -1});//下方向
-                    int count4 = searchConnectCount(0, status, board, x, y, new int[]{-1, 0});//左方向
+                    int count2 = searchConnectCount(0, status, board, x, y, new int[]{1, 1});//斜め右上方向
+                    int count3 = searchConnectCount(0, status, board, x, y, new int[]{0, 0});//右方向
+                    int count4 = searchConnectCount(0, status, board, x, y, new int[]{1, -1});//斜め右下方向
+                    int count5 = searchConnectCount(0, status, board, x, y, new int[]{0, -1});//下方向
+                    int count6 = searchConnectCount(0, status, board, x, y, new int[]{-1, -1});//斜め左下方向
+                    int count7 = searchConnectCount(0, status, board, x, y, new int[]{-1, 0});//左方向
+                    int count8 = searchConnectCount(0, status, board, x, y, new int[]{-1, 1});//斜め左上方向
 
-                    if(count1 >= 5 || count2 >= 5 || count3 >= 5 || count4 >= 5){
+                    if(count1 >= 5 || count2 >= 5 || count3 >= 5 || count4 >= 5 || count5 >= 5 || count6 >= 5 || count7 >= 5 || count8 >= 5){
 //                          finish = true;
                         return true;
                     }
