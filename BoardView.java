@@ -19,7 +19,7 @@ public class BoardView extends View {
     private float cx;    // タップした位置
     private float cy;    // タップした位置
     private float radius;    // 円の半径
-    private int trout = 30;    // マスの数ｘ２
+    private int trout = board.COL*2;    // マスの数ｘ２
     private int troutSizeX;    //1マスのXサイズ
     private int troutSizeY;    //1マスのYサイズ
     Point point = new Point(0, 0);    //コンテンツ領域
