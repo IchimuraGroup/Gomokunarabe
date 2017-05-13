@@ -7,7 +7,7 @@ package com.example.c01142144b.gomokunarabe;
 public class Board {
 //     public static int ROW = 9;
 //     public static int COL = 9;
-    public static int SIZE = 9;
+    public static final int SIZE = 9;
     private Cell[][] cells = new Cell[SIZE][SIZE];
 
     public Board(){
