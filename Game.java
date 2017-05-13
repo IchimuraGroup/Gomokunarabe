@@ -33,10 +33,11 @@ public class Game{
     }
     //終了判定➔ゲームの終了
     public static boolean isFinished(Board board){
-            int[][] board = Board.getCellStatus();
-            boolean finish = true;
-            for (int i = 0; i < board.length - 4; i++) {
-                for (int j = 0; j < board.length - 4; j++) {
+           // int[][] board = Board.getCellStatus();
+        
+            boolean finish = false;
+            for (int i = 0; i < Board.SIZE - 4; i++) {
+                for (int j = 0; j < Board.SIZE - 4; j++) {
                 }
             }
 
