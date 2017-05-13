@@ -24,7 +24,11 @@ public class Game{
     }
     //プレイヤー交替
     public static void changeNextPlayer(){
-        CurrentPlayer = Player();
+        if(CurrentPlayer == player1){
+            CurrentPlayer = player1;
+        }else{
+            CurrentPlayer = player2;
+        }
         
     }
     //終了判定➔ゲームの終了
