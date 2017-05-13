@@ -27,7 +27,7 @@ public class Game{
         CurrentPlayer = Player();
         
     }
-    //終了判定
+    //終了判定➔ゲームの終了
     public static boolean isFinished(Board board){
             int[][] board = Board.getCellStatus();
             boolean finish = true;
@@ -45,7 +45,7 @@ public class Game{
     //勝利したプレイヤーを取得
     public static Player getWinnerPlayer(Player player){
 
-        return player;
+        return player();
     }
     //新しいボードを作る
     public static Board createNewBoard(){
