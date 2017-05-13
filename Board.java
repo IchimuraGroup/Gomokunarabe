@@ -5,13 +5,14 @@ package com.example.c01142144b.gomokunarabe;
  */
 
 public class Board {
-    public static int ROW = 9;
-    public static int COL = 9;
+//     public static int ROW = 9;
+//     public static int COL = 9;
+    public static int SIZE = 9;
     private Cell[][] cells = new Cell[ROW][COL];
 
     public Board(){
-        for (int x = 0; x < ROW; x++){
-            for (int y = 0; y < COL; y++){
+        for (int x = 0; x < SIZE; x++){
+            for (int y = 0; y < SIZE; y++){
                 cells[x][y] = new Cell();
             }
         }
