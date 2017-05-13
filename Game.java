@@ -25,9 +25,9 @@ public class Game{
     //プレイヤー交替
     public static void changeNextPlayer(){
         if(CurrentPlayer == player1){
-            CurrentPlayer = player1;
-        }else{
             CurrentPlayer = player2;
+        }else{
+            CurrentPlayer = player1;
         }
         
     }
