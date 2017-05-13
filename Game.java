@@ -48,14 +48,14 @@ public class Game{
         return finish;
         }
     
-    private int searchConnect(int count, Cell.STATUS status, Board board,int x, int y, dir[] dir){
-        if(x < 0 || x >Board.SIZE || y < 0 || y > Board.SIZE){
+    private int searchConnectCount(int count, Cell.STATUS status, Board board, int x, int y, dir[] dir){
+        if(x < 0 || x > Board.SIZE || y < 0 || y > Board.SIZE){
             return count;
         }
         
         if(status == board.getCellStatus(x, y)){
             count++;
-            searchConnect(count, status, board, x*dir[0], y*dir[1], dir);          
+            count = searchConnectCount(count, status, board, x*dir[0], y*dir[1], dir);          
         }       
         
         return count;
