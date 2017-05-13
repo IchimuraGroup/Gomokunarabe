@@ -36,15 +36,15 @@ public class Game{
            // int[][] board = Board.getCellStatus();
         
             boolean finish = false;
-            for (int i = 0; i < Board.SIZE - 4; i++) {
-                for (int j = 0; j < Board.SIZE - 4; j++) {
+            for (int x = 0; x < Board.SIZE; y++) {
+                for (int y = 0; y < Board.SIZE; y++) {
                 }
             }
 
-            for (int i = 0; i < board.length - 4; i++) {
+          /*  for (int i = 0; i < board.length - 4; i++) {
                 for (int j = 4; j < board.length; j++) {
                 }
-            }
+            }*/
         return finish;
         }
     //勝利したプレイヤーを取得
