@@ -1,29 +1,32 @@
-package com.example.r.gomokunarabe;
+package com.example.c01142144b.gomokunarabe;
 
-        import android.content.Context;
-        import android.graphics.Canvas;
-        import android.graphics.Color;
-        import android.graphics.Paint;
-        import android.graphics.Paint.Style;
-        import android.graphics.Point;
-        import android.util.AttributeSet;
-        import android.view.MotionEvent;
-        import android.view.View;
-        import android.util.Log;
+/**
+ * Created by c01142144b on 2017/05/09.
+ */
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.Point;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 public class BoardView extends View {
 
     private Board board = new Board();
-    private Player player;
+    private Player player = Game.getCurrentPlayer();
     private Paint paint;
     private float cx;    // タップした位置
     private float cy;    // タップした位置
     private float radius;    // 円の半径
-//     private int trout = board.COL*2;    // マスの数ｘ２
+    //     private int trout = board.COL*2;    // マスの数ｘ２
     private int troutSizeX;    //1マスのXサイズ
     private int troutSizeY;    //1マスのYサイズ
     private Point point = new Point(0, 0);    //コンテンツ領域
-
 
 
     /**コンストラク*/
@@ -50,13 +53,29 @@ public class BoardView extends View {
         radius = 20;
     }
 
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int height = getMeasuredHeight();
+        int width = getMeasuredWidth();
+        int size = width < height ? width  : height;
+        setMeasuredDimension(size, size);
+    }
+
+
     /**Viewのコンテンツ領域を取得*/
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        point.set(this.getWidth(), this.getHeight());
-        troutSizeX = this.getWidth() / Board.SIZE;//trout →　Board.SIZE
-        troutSizeY = this.getHeight() / Board.SIZE;//trout →　Board.SIZE
+//        troutSizeX = this.getWidth() / Board.SIZE;//trout →　Board.SIZE
+//        troutSizeY = this.getHeight() / Board.SIZE;//trout →　Board.SIZE
+        int width = this.getWidth();
+        int height = this.getHeight();
+        int size = width < height ? width  : height;
+        troutSizeX = size / Board.SIZE;
+        troutSizeY = size / Board.SIZE;
+        point.set(size, size);
+
     }
 
     /**Draw*/
@@ -65,32 +84,55 @@ public class BoardView extends View {
         // 格子を描画する
         drawBoard(canvas);
         //Pieceを描画する
-        for(int x=0;x<=Board.SIZE;x++){//trout/2 → Board.SIZE
-            for(int y=0;y<=Board.SIZE;y++){//trout/2 → Board.SIZE
-                drawPiece(canvas, board.getCellSatus(x,y),x,y);
+        for(int x=0;x<Board.SIZE;x++){//trout/2 → Board.SIZE
+            for(int y=0;y<Board.SIZE;y++){//trout/2 → Board.SIZE
+                drawPiece(canvas, x, y);
             }
         }
-     }
+    }
 
     /**TouchEvent*/
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:    // 指をタッチした
-                cx = event.getX();
-                cy = event.getY();
-                int tx=0;    // X座標
-                int ty=0;    // Y座標
-                for (int i = 1; i < trout; i += 2) {
-                    if (cx >= i * point.x / Board.SIZE && cx < (i + 2) * point.x) {//trout →　Board.SIZE
-                        tx = (i + 1) / 2;
-                    }
-                    if (cy >= i * point.y / Board.SIZE && cy < (i + 2) * point.y) {//trout →　Board.SIZE
-                        ty = (i + 1) / 2;
-                    }
+                cx = event.getX() + troutSizeX / 2;
+                cy = event.getY() + troutSizeY / 2;
+//                int tx=0;    // X座標
+//                int ty=0;    // Y座標
+                int tx = (int)(cx / point.x * Board.SIZE);    // X座標
+                int ty = (int)(cy / point.y * Board.SIZE);    // Y座標
+//                for (int i = 1; i < Board.SIZE; i++) {//i += 2 →　i++
+//                    if (cx >= i * point.x / Board.SIZE && cx < (i + 2) * point.x) {//trout →　Board.SIZE
+//                        tx = (i + 1) / 2;
+//                    }
+//                    if (cy >= i * point.y / Board.SIZE && cy < (i + 2) * point.y) {//trout →　Board.SIZE
+//                        ty = (i + 1) / 2;
+//                    }
+//                }
+                Log.i("point.x", String.valueOf(point.x));
+                Log.i("point.y", String.valueOf(point.y));
+                Log.i("tx", String.valueOf(tx));
+                Log.i("ty", String.valueOf(ty));
+
+                if (tx >= Board.SIZE || ty >= Board.SIZE){
+                    break;
                 }
-                if(board.canPut(tx,ty)==true) {
+
+                if (Game.isFinished(board)){
+                    break;
+                }
+
+                if(board.canPut(tx,ty) == true) {
                     board.put(tx,ty,player.getPiece());
+                    if (Game.isFinished(board)){
+                        System.out.println(player+"の勝利");
+                        break;
+                    }
+
+                    Game.changeNextPlayer();
+                    player = Game.getCurrentPlayer();
+                    Log.d("PlayerColor:",player.toString());
                 }
                 break;
 
@@ -109,29 +151,32 @@ public class BoardView extends View {
     }
 
     /**格子描画*/
-    private void drawBoard(final Canvas canvas) {
+    private void drawBoard(Canvas canvas) {
         // 格子を描画する
-        Paint paint = new Paint();
+        Paint paint = new Paint(Color.BLACK);
         paint.setStrokeWidth(1);
-        for (int i = 0; i < (trout / 2); i++) {
+        for (int i = 0; i < Board.SIZE; i++) {
             canvas.drawLine(point.x * i / Board.SIZE, 0, point.x * i / Board.SIZE, point.y, paint);//（trout/2） →　Board.SIZE
             canvas.drawLine(0, point.y * i / Board.SIZE, point.x, point.y * i / Board.SIZE, paint);//（trout/2） →　Board.SIZE
         }
     }
 
     /**Piece描画*/
-    private void drawPiece(final Canvas canvas, final Cell.STATUS status,int x,int y) {
+    private void drawPiece(Canvas canvas, int x,int y) {
         Paint paint = new Paint();
         paint.setStyle(Style.FILL);
         paint.setStrokeWidth(1);
+        Cell.STATUS status = board.getCellStatus(x, y);
         switch(status){
             case WHITE:
                 paint.setColor(Color.GRAY);
-                canvas.drawCircle(troutSizeX * 2 * x, troutSizeY * 2 * y, radius, paint);
+                canvas.drawCircle(troutSizeX * x, troutSizeY * y, radius, paint);
+                break;
 
             case BLACK:
                 paint.setColor(Color.BLACK);
-                canvas.drawCircle(troutSizeX * 2 * x, troutSizeY * 2 * y, radius, paint);
+                canvas.drawCircle(troutSizeX * x, troutSizeY * y, radius, paint);
+                break;
 
             case NONE:
                 break;

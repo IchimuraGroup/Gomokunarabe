@@ -13,4 +13,13 @@ public class Player {
     public Piece getPiece(){
         return this.piece;
     }
+
+    @Override
+    public String toString(){
+        if (piece == Piece.BLACK){
+            return "黒";
+        }else {
+            return "白";
+        }
+    }
 }

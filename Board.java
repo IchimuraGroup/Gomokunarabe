@@ -5,7 +5,7 @@ package com.example.c01142144b.gomokunarabe;
  */
 
 public class Board {
-//     public static int ROW = 9;
+    //     public static int ROW = 9;
 //     public static int COL = 9;
     public static final int SIZE = 9;
     private Cell[][] cells = new Cell[SIZE][SIZE];
@@ -26,7 +26,7 @@ public class Board {
         return cells[x][y].getSTATUS() == Cell.STATUS.NONE;
     }
 
-    public Cell.STATUS getCellSｔatus(int x, int y){
+    public Cell.STATUS getCellStatus(int x, int y){
         return cells[x][y].getSTATUS();
     }
 }
