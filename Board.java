@@ -8,7 +8,7 @@ public class Board {
 //     public static int ROW = 9;
 //     public static int COL = 9;
     public static int SIZE = 9;
-    private Cell[][] cells = new Cell[ROW][COL];
+    private Cell[][] cells = new Cell[SIZE][SIZE];
 
     public Board(){
         for (int x = 0; x < SIZE; x++){
