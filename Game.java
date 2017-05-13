@@ -1,15 +1,19 @@
 public class Game{
-    Player player;
+//     Player player;
+    private Player player1 = new Player(Piece.BLACK);
+    private Player player2 = new Player(Piece.WHITE);
     int PLAYER_COUNT;
     //プレイヤーをセット
     public static Player setPlayer1(Player player){
-        player = new Player(Piece.BLACK);
-        return player;
+//         player = new Player(Piece.BLACK);
+        this.player1 = player;
+//         return player;
 
     }
     public static Player setPlayer2(Player player){
-        player = new Player(Piece.WHITE);
-        return player;
+//         player = new Player(Piece.WHITE);
+        this.player2 = player;
+//         return player;
 
     }
     //現在のプレイヤーを返す
