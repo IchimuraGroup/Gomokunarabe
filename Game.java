@@ -18,7 +18,7 @@ public class Game{
 
     }
     //現在のプレイヤーを返す
-    public static Player getCurrentPlayer(Player player){
+    public static Player getCurrentPlayer(){
 
         return CurrentPlayer;
     }
