@@ -38,6 +38,8 @@ public class Game{
             boolean finish = false;
             for (int x = 0; x < Board.SIZE; x++) {
                 for (int y = 0; y < Board.SIZE; y++) {
+                    if(Cell.STATUS.BLACK == Board.getCellStatus(x,y))
+                        
                 }
             }
 
