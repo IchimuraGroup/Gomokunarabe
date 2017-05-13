@@ -3,7 +3,7 @@ public class Game{
     private Player player1 = new Player(Piece.BLACK);
     private Player player2 = new Player(Piece.WHITE);
     Player CurrentPlayer;
-    int PLAYER_COUNT;
+//    int PLAYER_COUNT;
     //プレイヤーをセット
     public static void setPlayer1(Player player){
 //         player = new Player(Piece.BLACK);
@@ -72,11 +72,6 @@ public class Game{
         }       
         
         return count;
-    }
-    //勝利したプレイヤーを取得
-    public static Player getWinnerPlayer(Player player){
-
-        return player();
     }
     //新しいボードを作る
     public static Board createNewBoard(){
