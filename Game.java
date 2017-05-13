@@ -36,7 +36,7 @@ public class Game{
            // int[][] board = Board.getCellStatus();
         
             boolean finish = false;
-            for (int x = 0; x < Board.SIZE; y++) {
+            for (int x = 0; x < Board.SIZE; x++) {
                 for (int y = 0; y < Board.SIZE; y++) {
                 }
             }
