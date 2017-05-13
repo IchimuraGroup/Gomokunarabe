@@ -26,7 +26,7 @@ public class Board {
         return cells[x][y].getSTATUS() == Cell.STATUS.NONE;
     }
 
-    public Cell.STATUS getCellSatus(int x, int y){
+    public Cell.STATUS getCellSｔatus(int x, int y){
         return cells[x][y].getSTATUS();
     }
 }
