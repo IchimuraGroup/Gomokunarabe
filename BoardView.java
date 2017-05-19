@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -26,12 +25,12 @@ public class BoardView extends View {
     //     private int trout = board.COL*2;    // マスの数ｘ２
     private int troutSizeX;    //1マスのXサイズ
     private int troutSizeY;    //1マスのYサイズ
-    private Point point = new Point(0, 0);    //コンテンツ領域
-
+//    private Point point = new Point(0, 0);    //コンテンツ領域
+    private int size;
 
     /**コンストラク*/
     public BoardView(Context context, AttributeSet attrs, int defStyle) {
-        super(context);
+        super(context, attrs, defStyle);
         initialize();
     }
     public BoardView(Context context, AttributeSet attrs) {
@@ -50,7 +49,9 @@ public class BoardView extends View {
         paint.setAntiAlias(true);
         paint.setColor(Color.BLACK);
         paint.setStyle(Style.FILL);
-        radius = 20;
+        radius = 50;
+        setPadding(50, 50, 50, 50);
+        setBackgroundColor(Color.GREEN);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class BoardView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int height = getMeasuredHeight();
         int width = getMeasuredWidth();
-        int size = width < height ? width  : height;
+        size = width < height ? width  : height;
         setMeasuredDimension(size, size);
     }
 
@@ -71,11 +72,10 @@ public class BoardView extends View {
 //        troutSizeY = this.getHeight() / Board.SIZE;//trout →　Board.SIZE
         int width = this.getWidth();
         int height = this.getHeight();
-        int size = width < height ? width  : height;
-        troutSizeX = size / Board.SIZE;
-        troutSizeY = size / Board.SIZE;
-        point.set(size, size);
-
+        size = width < height ? width  : height;
+        troutSizeX = size / (Board.SIZE - 1);
+        troutSizeY = size / (Board.SIZE - 1);
+//        point.set(size, size);
     }
 
     /**Draw*/
@@ -100,8 +100,8 @@ public class BoardView extends View {
                 cy = event.getY() + troutSizeY / 2;
 //                int tx=0;    // X座標
 //                int ty=0;    // Y座標
-                int tx = (int)(cx / point.x * Board.SIZE);    // X座標
-                int ty = (int)(cy / point.y * Board.SIZE);    // Y座標
+                int tx = (int)(cx / size * Board.SIZE);    // X座標 point.x →　size
+                int ty = (int)(cy / size * Board.SIZE);    // Y座標 point.y →　size
 //                for (int i = 1; i < Board.SIZE; i++) {//i += 2 →　i++
 //                    if (cx >= i * point.x / Board.SIZE && cx < (i + 2) * point.x) {//trout →　Board.SIZE
 //                        tx = (i + 1) / 2;
@@ -110,8 +110,8 @@ public class BoardView extends View {
 //                        ty = (i + 1) / 2;
 //                    }
 //                }
-                Log.i("point.x", String.valueOf(point.x));
-                Log.i("point.y", String.valueOf(point.y));
+                Log.i("point.x", String.valueOf(size));//point.x →　size
+                Log.i("point.y", String.valueOf(size));//point.y →　size
                 Log.i("tx", String.valueOf(tx));
                 Log.i("ty", String.valueOf(ty));
 
@@ -155,9 +155,9 @@ public class BoardView extends View {
         // 格子を描画する
         Paint paint = new Paint(Color.BLACK);
         paint.setStrokeWidth(1);
-        for (int i = 0; i < Board.SIZE; i++) {
-            canvas.drawLine(point.x * i / Board.SIZE, 0, point.x * i / Board.SIZE, point.y, paint);//（trout/2） →　Board.SIZE
-            canvas.drawLine(0, point.y * i / Board.SIZE, point.x, point.y * i / Board.SIZE, paint);//（trout/2） →　Board.SIZE
+        for (int i = 0; i <= Board.SIZE; i++) {
+            canvas.drawLine(troutSizeX * i, 0, troutSizeX * i, size, paint);//（trout/2） →　Board.SIZE, point.x →　size
+            canvas.drawLine(0, troutSizeY * i, size, troutSizeY * i, paint);//（trout/2） →　Board.SIZE, point.y →　size
         }
     }
 
@@ -169,7 +169,7 @@ public class BoardView extends View {
         Cell.STATUS status = board.getCellStatus(x, y);
         switch(status){
             case WHITE:
-                paint.setColor(Color.GRAY);
+                paint.setColor(Color.WHITE);
                 canvas.drawCircle(troutSizeX * x, troutSizeY * y, radius, paint);
                 break;
 
