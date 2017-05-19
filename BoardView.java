@@ -96,12 +96,20 @@ public class BoardView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:    // 指をタッチした
-                cx = event.getX() + troutSizeX / 2;
-                cy = event.getY() + troutSizeY / 2;
+                cx = event.getX();// + troutSizeX / 2;
+                cy = event.getY();// + troutSizeY / 2;
 //                int tx=0;    // X座標
 //                int ty=0;    // Y座標
-                int tx = (int)(cx / size * Board.SIZE);    // X座標 point.x →　size
-                int ty = (int)(cy / size * Board.SIZE);    // Y座標 point.y →　size
+                if(cx < size || cy < size){
+                    break;
+                }
+                
+                if(cx > size - troutSizeX || cy > size - troutSizeY){
+                    break;
+                }
+                
+                int tx = (int)(cx / size * (Board.SIZE - 1));    // X座標 point.x →　size
+                int ty = (int)(cy / size * (Board.SIZE - 1));    // Y座標 point.y →　size
 //                for (int i = 1; i < Board.SIZE; i++) {//i += 2 →　i++
 //                    if (cx >= i * point.x / Board.SIZE && cx < (i + 2) * point.x) {//trout →　Board.SIZE
 //                        tx = (i + 1) / 2;
