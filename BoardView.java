@@ -60,6 +60,8 @@ public class BoardView extends View {
         int height = getMeasuredHeight();
         int width = getMeasuredWidth();
         size = width < height ? width  : height;
+        troutSizeX = size / (Board.SIZE + 1);
+        troutSizeY = size / (Board.SIZE + 1);
         setMeasuredDimension(size, size);
     }
 
@@ -96,20 +98,20 @@ public class BoardView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:    // 指をタッチした
-                cx = event.getX();// + troutSizeX / 2;
-                cy = event.getY();// + troutSizeY / 2;
+                cx = event.getX(); //+ troutSizeX / 2;
+                cy = event.getY(); //+ troutSizeY / 2;
 //                int tx=0;    // X座標
 //                int ty=0;    // Y座標
-                if(cx < size || cy < size){
+                if(cx < troutSizeX || cy < troutSizeY){
                     break;
                 }
                 
                 if(cx > size - troutSizeX || cy > size - troutSizeY){
                     break;
                 }
-                
-                int tx = (int)(cx / size * (Board.SIZE - 1));    // X座標 point.x →　size
-                int ty = (int)(cy / size * (Board.SIZE - 1));    // Y座標 point.y →　size
+                //問題児　ｔｘとｔｙの値が狂う
+                int tx = (int)((cx + troutSizeX * 1.5) / size * (Board.SIZE - 1));    // X座標 point.x →　size
+                int ty = (int)((cy + troutSizeY * 1.5) / size * (Board.SIZE - 1));    // Y座標 point.y →　size
 //                for (int i = 1; i < Board.SIZE; i++) {//i += 2 →　i++
 //                    if (cx >= i * point.x / Board.SIZE && cx < (i + 2) * point.x) {//trout →　Board.SIZE
 //                        tx = (i + 1) / 2;
@@ -163,9 +165,9 @@ public class BoardView extends View {
         // 格子を描画する
         Paint paint = new Paint(Color.BLACK);
         paint.setStrokeWidth(1);
-        for (int i = 0; i <= Board.SIZE; i++) {
-            canvas.drawLine(troutSizeX * i, 0, troutSizeX * i, size, paint);//（trout/2） →　Board.SIZE, point.x →　size
-            canvas.drawLine(0, troutSizeY * i, size, troutSizeY * i, paint);//（trout/2） →　Board.SIZE, point.y →　size
+        for (int i = 1; i <= Board.SIZE; i++) {
+            canvas.drawLine(troutSizeX * i, troutSizeY, troutSizeX * i, size - troutSizeY, paint);//（trout/2） →　Board.SIZE, point.x →　size
+            canvas.drawLine(troutSizeX, troutSizeY * i, size - troutSizeX, troutSizeY * i, paint);//（trout/2） →　Board.SIZE, point.y →　size
         }
     }
 
