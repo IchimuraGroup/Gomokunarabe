@@ -19,14 +19,13 @@ public class BoardView extends View {
     private Board board = new Board();
     private Player player = Game.getCurrentPlayer();
     private Paint paint;
-    private float cx;    // タップした位置
-    private float cy;    // タップした位置
-    private float radius;    // 円の半径
-    //     private int trout = board.COL*2;    // マスの数ｘ２
-    private int troutSizeX;    //1マスのXサイズ
-    private int troutSizeY;    //1マスのYサイズ
-//    private Point point = new Point(0, 0);    //コンテンツ領域
-    private int size;
+    private float troutSize;        //1マスのXサイズ
+    private float size;             //一片の長さ
+
+    private final int padding=30;         //要素の中の余白
+    private final float radius=30;           // 円の半径
+    private final float precision=15;     //タッチ修正
+
 
     /**コンストラク*/
     public BoardView(Context context, AttributeSet attrs, int defStyle) {
@@ -49,8 +48,6 @@ public class BoardView extends View {
         paint.setAntiAlias(true);
         paint.setColor(Color.BLACK);
         paint.setStyle(Style.FILL);
-        radius = 50;
-        setPadding(50, 50, 50, 50);
         setBackgroundColor(Color.GREEN);
     }
 
@@ -60,24 +57,8 @@ public class BoardView extends View {
         int height = getMeasuredHeight();
         int width = getMeasuredWidth();
         size = width < height ? width  : height;
-        troutSizeX = size / (Board.SIZE + 1);
-        troutSizeY = size / (Board.SIZE + 1);
-        setMeasuredDimension(size, size);
-    }
-
-
-    /**Viewのコンテンツ領域を取得*/
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-//        troutSizeX = this.getWidth() / Board.SIZE;//trout →　Board.SIZE
-//        troutSizeY = this.getHeight() / Board.SIZE;//trout →　Board.SIZE
-        int width = this.getWidth();
-        int height = this.getHeight();
-        size = width < height ? width  : height;
-        troutSizeX = size / (Board.SIZE - 1);
-        troutSizeY = size / (Board.SIZE - 1);
-//        point.set(size, size);
+        setMeasuredDimension((int)size, (int)size);
+        troutSize = (size-padding*2) / (Board.SIZE-1);
     }
 
     /**Draw*/
@@ -97,41 +78,13 @@ public class BoardView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:    // 指をタッチした
-                cx = event.getX(); //+ troutSizeX / 2;
-                cy = event.getY(); //+ troutSizeY / 2;
-//                int tx=0;    // X座標
-//                int ty=0;    // Y座標
-                if(cx < troutSizeX || cy < troutSizeY){
-                    break;
-                }
-                
-                if(cx > size - troutSizeX || cy > size - troutSizeY){
-                    break;
-                }
-                //問題児　ｔｘとｔｙの値が狂う
-                int tx = (int)((cx + troutSizeX * 1.5) / size * (Board.SIZE - 1));    // X座標 point.x →　size
-                int ty = (int)((cy + troutSizeY * 1.5) / size * (Board.SIZE - 1));    // Y座標 point.y →　size
-//                for (int i = 1; i < Board.SIZE; i++) {//i += 2 →　i++
-//                    if (cx >= i * point.x / Board.SIZE && cx < (i + 2) * point.x) {//trout →　Board.SIZE
-//                        tx = (i + 1) / 2;
-//                    }
-//                    if (cy >= i * point.y / Board.SIZE && cy < (i + 2) * point.y) {//trout →　Board.SIZE
-//                        ty = (i + 1) / 2;
-//                    }
-//                }
-                Log.i("point.x", String.valueOf(size));//point.x →　size
-                Log.i("point.y", String.valueOf(size));//point.y →　size
-                Log.i("tx", String.valueOf(tx));
-                Log.i("ty", String.valueOf(ty));
+            case MotionEvent.ACTION_DOWN:
 
-                if (tx >= Board.SIZE || ty >= Board.SIZE){
-                    break;
-                }
+                int tx = Math.round(((event.getX()-precision)/troutSize));
+                int ty = Math.round(((event.getY()-precision)/troutSize));
 
-                if (Game.isFinished(board)){
-                    break;
-                }
+                if (tx >= Board.SIZE || ty >= Board.SIZE){break;}
+                if (Game.isFinished(board)){break;}
 
                 if(board.canPut(tx,ty) == true) {
                     board.put(tx,ty,player.getPiece());
@@ -145,16 +98,6 @@ public class BoardView extends View {
                     Log.d("PlayerColor:",player.toString());
                 }
                 break;
-
-            case MotionEvent.ACTION_MOVE:    // 指を動かしている
-                assert true;    // 何もしない
-                break;
-            case MotionEvent.ACTION_UP:        // 指を離した
-                assert true;    // 何もしない
-                break;
-            default:
-                assert true;    // 何もしない
-                break;
         }
         invalidate();
         return true;
@@ -165,9 +108,9 @@ public class BoardView extends View {
         // 格子を描画する
         Paint paint = new Paint(Color.BLACK);
         paint.setStrokeWidth(1);
-        for (int i = 1; i <= Board.SIZE; i++) {
-            canvas.drawLine(troutSizeX * i, troutSizeY, troutSizeX * i, size - troutSizeY, paint);//（trout/2） →　Board.SIZE, point.x →　size
-            canvas.drawLine(troutSizeX, troutSizeY * i, size - troutSizeX, troutSizeY * i, paint);//（trout/2） →　Board.SIZE, point.y →　size
+        for (int i = 0; i < Board.SIZE; i++) {
+            canvas.drawLine(i*troutSize+padding,padding,i*troutSize+padding,size-padding, paint);
+            canvas.drawLine(padding,i*troutSize+padding,size-padding,i*troutSize+padding, paint);
         }
     }
 
@@ -180,12 +123,12 @@ public class BoardView extends View {
         switch(status){
             case WHITE:
                 paint.setColor(Color.WHITE);
-                canvas.drawCircle(troutSizeX * x, troutSizeY * y, radius, paint);
+                canvas.drawCircle(troutSize * x + padding, troutSize * y +padding, radius, paint);
                 break;
 
             case BLACK:
                 paint.setColor(Color.BLACK);
-                canvas.drawCircle(troutSizeX * x, troutSizeY * y, radius, paint);
+                canvas.drawCircle(troutSize * x + padding, troutSize * y + padding, radius, paint);
                 break;
 
             case NONE:
